@@ -1,0 +1,79 @@
+#include <string>
+#include <vector>
+#include <sstream>
+
+using namespace std;
+
+vector<string> solution(vector<string> record) {
+    vector<string> answer;
+    vector<string> id;
+    vector<string> name;
+    vector<string> act;
+    for (int i = 0; i < record.size(); i++)
+    {
+        int j = 0;
+        string s = "";
+        istringstream ss(record[i]);
+        string str;
+        while (getline(ss, str, ' '))
+        {
+            if (j == 0)
+                act.push_back(str);
+            
+            else if (j == 1)
+            {
+                for (int k = 0; k < id.size(); k++)
+                {
+                    if (id[k] == str)
+                    {
+                        s = name[k];
+                        break;
+                    }
+                }
+                id.push_back(str);
+            }
+
+            else if (j == 2)
+            {
+                if (s != str)
+                {
+                    for (int t = 0; t < name.size(); t++)
+                    {
+                        if (id.back() == id[t])
+                            name[t] = str;
+                    }
+                }
+                name.push_back(str);
+            }
+
+            if (j == 1 && act.back() == "Leave")
+            {
+                name.push_back(s);
+            }
+            j++;
+        }
+    }
+
+    for (int i = 0; i < act.size(); i++)
+    {   
+        string s = name[i]; 
+        if (act[i] == "Change")
+        {
+        }
+        else if (act[i] == "Enter")
+        {
+            s += "님이 들어왔습니다.";
+            answer.push_back(s);
+        }
+        else if (act[i] == "Leave")
+        {
+            s += "님이 나갔습니다.";
+            answer.push_back(s);
+        }
+    }
+    return answer;
+}
+int main()
+{
+    solution({ "Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan" });
+}
